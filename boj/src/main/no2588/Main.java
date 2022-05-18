@@ -1,4 +1,4 @@
-package boj.no2588;
+package boj.src.no2588;
 
 import java.util.Scanner;
 

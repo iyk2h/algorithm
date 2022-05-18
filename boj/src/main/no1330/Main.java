@@ -1,4 +1,4 @@
-package boj.no1330;
+package boj.src.no1330;
 
 import java.io.BufferedReader;
 import java.io.IOException;
