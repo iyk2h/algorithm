@@ -1,52 +1,52 @@
+
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.StringTokenizer;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st;
 
         int input = Integer.parseInt(bf.readLine());
 
+        /*
+        input -> 1 까지 연산의 최솟값
 
-        /*입력값을 1로 만들기 위한 횟수의 최솟값
-         *
-         *i%3 == 0 -> i / 3
-         *i%2 == 0 -> i / 2
-         *else i -= 1
-         *
-         * bottom up 방식으로
-         * 최소 횟수를 가지고 있는 배열 초기화
-         * 초깃값 : arr[0], arr[1] == 0
-         * */
+        3가지 연산 가능
+        input 이 3으로 나누어 떨어지면, 3으로 나눈다.
+        input 이 2로 나누어 떨어지면, 2로 나눈다.
+        아니면 1을 뺀다.
 
-        int arr[] = new int[input + 1];
+        그럼 조건식이 2개 나온다.
+        input 이 2로 나누어 떨어지면, 2로 나눈값 vs 1을 뺀 값
+        input 이 3로 나누어 떨어지면, 3로 나눈값 vs 1을 뺀 값
 
-//      초깃값
-        arr[0] = arr[1] = 0;
+        초깃값
+        dp[0] = dp[1] = 0
+        */
 
-//      2부터 하는 이유는 1은 이미 0으로 초기화되어있기 때문
+        int[] dp = new int[input + 1];
+
+        dp[0] = dp[1] = 0;
+
+        // 2부터 하는 이유는 bottom up, 1은 이미 초기화 되어있음
         for (int i = 2; i <= input; i++) {
-//          i가 2,3으로 나누어 떨어지지 않는다면 1을 더하게 된다.
-            arr[i] = arr[i - 1] + 1;
+            // 1을 빼는 경우 바로 직전의 위치 누적 값 + 1
+            dp[i] = dp[i - 1] + 1;
 
-//          i가 2, 3으로 나눠어 떨아지는 경우
-//          기존 값과 나눈값을 비교한다.
+            // 2로 나누어지는 경우 현재 누적 횟수 vs 2로 나눈 값의 누적 횟수 비교
             if (i % 2 == 0) {
-                arr[i] = Math.min(arr[i], arr[i / 2] + 1);
+                // 2로 나누어 떨어지는 경우 = i / 2위치 누적 값 + 1
+                dp[i] = Math.min(dp[i], dp[i / 2] + 1);
             }
             if (i % 3 == 0) {
-                arr[i] = Math.min(arr[i], arr[i / 3] + 1);
+                // 3로 나누어 떨어지는 경우 = i / 3위치 누적 값 + 1
+                dp[i] = Math.min(dp[i], dp[i / 3] + 1);
             }
         }
-
-        System.out.println(arr[input]);
+        System.out.println(dp[input]);
     }
 }
