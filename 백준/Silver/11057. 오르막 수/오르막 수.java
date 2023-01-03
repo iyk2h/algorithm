@@ -28,9 +28,6 @@ public class Main {
     }
 
     static int L(int n, int i) {
-        if (n == 1) {
-            return dp[n][i];
-        }
         if (dp[n][i] != 0) {
             return dp[n][i];
         }
