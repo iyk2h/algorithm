@@ -4,21 +4,22 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-    static long[] dp;
+    static long[][] dp;
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
-        
-        dp = new long[n + 1];
-        dp[0] = 0;
-        dp[1] = 1;
+
+        dp = new long[n + 1][2];
+        dp[1][0] = 0;
+        dp[1][1] = 1;
 
         for (int digit = 2; digit <= n; digit++) {
-            dp[digit] = dp[digit - 2] + dp[digit - 1];
+            dp[digit][0] = dp[digit - 1][1] + dp[digit - 1][0];
+            dp[digit][1] = dp[digit - 1][0];
         }
-        System.out.println(dp[n]);
+        System.out.println(dp[n][0] + dp[n][1]);
     }
 }
