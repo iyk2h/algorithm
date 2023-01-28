@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -13,27 +12,40 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
 
-        String[][] arr = new String[N][2];
+        Person[] persons = new Person[N];
 
         StringTokenizer st;
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
-            arr[i][0] = (st.nextToken());
-            arr[i][1] = (st.nextToken());
+
+            int age = Integer.parseInt(st.nextToken());
+            String name = st.nextToken();
+
+            persons[i] = new Person(age, name);
         }
 
-        Arrays.sort(arr, new Comparator<String[]>() {
-            @Override
-            public int compare(String[] o1, String[] o2) {
-                return Integer.parseInt(o1[0]) - Integer.parseInt(o2[0]);
-            }
-        });
+        Arrays.sort(persons, (o1, o2) -> o1.age - o2.age);
 
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < N; i++) {
-            sb.append(arr[i][0] + " " + arr[i][1]).append('\n');
+            sb.append(persons[i]);
         }
 
         System.out.println(sb);
+    }
+
+    public static class Person {
+        int age;
+        String name;
+
+        public Person(int age, String name) {
+            this.age = age;
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return age + " " + name + "\n";
+        }
     }
 }
