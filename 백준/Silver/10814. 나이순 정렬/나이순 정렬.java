@@ -22,7 +22,12 @@ public class Main {
             arr[i][1] = (st.nextToken());
         }
 
-        Arrays.sort(arr, Comparator.comparingInt(e -> Integer.parseInt(e[0])));
+        Arrays.sort(arr, new Comparator<String[]>() {
+            @Override
+            public int compare(String[] o1, String[] o2) {
+                return Integer.parseInt(o1[0]) - Integer.parseInt(o2[0]);
+            }
+        });
 
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < N; i++) {
