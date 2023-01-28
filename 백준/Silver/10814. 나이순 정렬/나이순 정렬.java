@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -12,40 +11,25 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
 
-        Person[] persons = new Person[N];
+        StringBuilder[] sbs = new StringBuilder[201];
 
-        StringTokenizer st;
+        for (int i = 0; i < sbs.length; i++) {
+            sbs[i] = new StringBuilder();
+        }
+
         for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-
+            StringTokenizer st = new StringTokenizer(br.readLine());
             int age = Integer.parseInt(st.nextToken());
             String name = st.nextToken();
 
-            persons[i] = new Person(age, name);
+            sbs[age].append(age).append(" ").append(name).append("\n");
         }
 
-        Arrays.sort(persons, (o1, o2) -> o1.age - o2.age);
-
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < N; i++) {
-            sb.append(persons[i]);
+        for (StringBuilder val : sbs) {
+            sb.append(val);
         }
 
         System.out.println(sb);
-    }
-
-    public static class Person {
-        int age;
-        String name;
-
-        public Person(int age, String name) {
-            this.age = age;
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return age + " " + name + "\n";
-        }
     }
 }
