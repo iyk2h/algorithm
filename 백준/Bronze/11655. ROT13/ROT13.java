@@ -14,23 +14,22 @@ public class Main {
             for (int i = 0; i < buf.length(); i++) {
                 char c = buf.charAt(i);
 
+                int charValue = 0;
                 if (c <= 'z' && c >= 'a') {
-                    int index = c - 'a';
-                    int afterIndex = index + 13;
-                    if (afterIndex >= 26) {
-                        System.out.print((char) ('a' + afterIndex - 26));
+                    if (c >= 'n') {
+                        charValue = c - 13;
                     } else {
-                        System.out.print((char) (c + 13));
+                        charValue = c + 13;
                     }
+                    System.out.print((char) (charValue));
                     continue;
                 } else if (c <= 'Z' && c >= 'A') {
-                    int index = c - 'A';
-                    int afterIndex = index + 13;
-                    if (afterIndex >= 26) {
-                        System.out.print((char) ('A' + afterIndex - 26));
+                    if (c >= 'N') {
+                        charValue = c - 13;
                     } else {
-                        System.out.print((char) (c + 13));
+                        charValue = c + 13;
                     }
+                    System.out.print((char) charValue);
                     continue;
                 }
                 System.out.print(c);
