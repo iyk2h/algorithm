@@ -10,12 +10,13 @@ import java.util.StringTokenizer;
 public class Main {
 
     public static ArrayList<ArrayList<Integer>> arr = new ArrayList<ArrayList<Integer>>();
+    public static StringBuilder sb;
     public static boolean[] dfsVisited;
     public static boolean[] bfsVisited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        sb = new StringBuilder();
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -43,13 +44,16 @@ public class Main {
         }
 
         dfs(V);
-        System.out.println();
+        sb.append("\n");
         bfs(V);
+
+        System.out.println(sb);
+
     }
 
     private static void dfs(int v) {
         dfsVisited[v] = true;
-        System.out.print(v + " ");
+        sb.append(v).append(" ");
         for (int i = 0; i < arr.get(v).size(); i++) {
             int y = arr.get(v).get(i);
             if (!dfsVisited[y]) {
@@ -66,7 +70,7 @@ public class Main {
 
         while (!queue.isEmpty()) {
             int x = queue.poll();
-            System.out.print(x + " ");
+            sb.append(x).append(" ");
             for (int i = 0; i < arr.get(x).size(); i++) {
                 Integer y = arr.get(x).get(i);
                 if (!bfsVisited[y]) {
