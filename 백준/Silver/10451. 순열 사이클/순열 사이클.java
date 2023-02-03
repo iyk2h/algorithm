@@ -6,13 +6,13 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
         int T = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < T; i++) {
             int N = Integer.parseInt(br.readLine());
 
-            StringBuilder sb = new StringBuilder();
             StringTokenizer st = new StringTokenizer(br.readLine());
 
             boolean[] visited = new boolean[N + 1];
@@ -37,8 +37,8 @@ public class Main {
                     tmp = arr[tmp];
                 }
             }
-            sb.append(count);
-            System.out.println(sb);
+            sb.append(count).append("\n");
         }
+        System.out.println(sb);
     }
 }
