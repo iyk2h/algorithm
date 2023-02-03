@@ -27,6 +27,7 @@ public class Main {
                 if (visited[j]) {
                     continue;
                 }
+                visited[j] = true;
                 int tmp = arr[j];
                 while (true) {
                     if (visited[tmp]) {
