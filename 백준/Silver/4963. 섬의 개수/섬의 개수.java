@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 public class Main {
 
@@ -13,14 +10,11 @@ public class Main {
     static int[] dy = {1, -1, 0, 0, 1, -1, 1, -1};
 
     public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        StringTokenizer st;
 
         while (true) {
-            st = new StringTokenizer(br.readLine());
-            x = Integer.parseInt(st.nextToken());
-            y = Integer.parseInt(st.nextToken());
+            x = read();
+            y = read();
 
             if (x == 0 && y == 0) {
                 System.out.println(sb);
@@ -33,9 +27,8 @@ public class Main {
             for (int i = 0; i < y; i++) {
                 map.add(new ArrayList<Integer>());
                 visited.add(new ArrayList<Boolean>());
-                st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < x; j++) {
-                    map.get(i).add(Integer.parseInt(st.nextToken()));
+                    map.get(i).add(read());
                     visited.get(i).add(false);
                 }
             }
@@ -67,5 +60,12 @@ public class Main {
                 }
             }
         }
+    }
+
+    static int read() throws Exception {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) > 32)
+            n = (n << 3) + (n << 1) + (c & 15);
+        return n;
     }
 }
