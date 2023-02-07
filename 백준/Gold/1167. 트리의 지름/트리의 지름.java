@@ -1,65 +1,76 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
 
     static ArrayList<Node>[] tree;
     static boolean[] visited;
     static int max = 0;
-    static int lastNode;
+    static int lastNodeIndex;
 
-    public static void main(String args[]) {
-        Scanner scan = new Scanner(System.in);
+    public static void main(String args[]) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        int n = scan.nextInt();
-        tree = new ArrayList[n + 1];
-        for(int i = 1; i < n + 1; i++) {
+        int N = Integer.parseInt(br.readLine());
+
+        tree = new ArrayList[N + 1];
+        visited = new boolean[N + 1];
+
+        for (int i = 1; i < N + 1; i++) {
             tree[i] = new ArrayList<>();
         }
 
-        for(int i = 0; i < n; i++) {
-            int s = scan.nextInt();
-            while(true) {
-                int index = scan.nextInt();
-                if(index == -1) break;
-                int cost = scan.nextInt();
-                tree[s].add(new Node(index, cost));
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+
+            int index = Integer.parseInt(st.nextToken());
+
+            while (true) {
+                int otherNodeIndex = Integer.parseInt(st.nextToken());
+                if (otherNodeIndex == -1) {
+                    break;
+                }
+                int weight = Integer.parseInt(st.nextToken());
+                tree[index].add(new Node(otherNodeIndex, weight));
             }
         }
 
-        visited = new boolean[n + 1];
         dfs(1, 0);
 
-        visited = new boolean[n + 1];
-        dfs(lastNode, 0);
+        visited = new boolean[N + 1];
+        dfs(lastNodeIndex, 0);
 
         System.out.println(max);
     }
 
-    public static void dfs(int x, int len) {
-        if(len > max) {
-            max = len;
-            lastNode = x;
+    public static void dfs(int index, int weight) {
+        if (weight > max) {
+            max = weight;
+            lastNodeIndex = index;
         }
-        visited[x] = true;
+        visited[index] = true;
 
-        for(int i = 0; i < tree[x].size(); i++) {
-            Node n = tree[x].get(i);
-            if(!visited[n.index]) {
-                dfs(n.index, n.cost + len);
-                visited[n.index] = true;
+        for (int i = 0; i < tree[index].size(); i++) {
+            Node node = tree[index].get(i);
+            if (!visited[node.index]) {
+                dfs(node.index, node.weight + weight);
+                visited[node.index] = true;
             }
         }
-
     }
 
     public static class Node {
-        int index;
-        int cost;
 
-        public Node(int index, int cost) {
+        int index;
+        int weight;
+
+        public Node(int index, int weight) {
             this.index = index;
-            this.cost = cost;
+            this.weight = weight;
         }
     }
 }
