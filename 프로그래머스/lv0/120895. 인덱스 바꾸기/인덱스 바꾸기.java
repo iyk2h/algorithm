@@ -1,12 +1,19 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 class Solution {
     public String solution(String my_string, int num1, int num2) {
         String answer = "";
         
         StringBuilder sb = new StringBuilder(my_string);
         
-        sb.setCharAt(num1, my_string.charAt(num2));
-        sb.setCharAt(num2, my_string.charAt(num1));
+        List<String> list = Arrays.stream(my_string.split("")).collect(Collectors.toList());
         
-        return sb.toString();
+        Collections.swap(list, num1, num2);
+        
+        
+        return String.join("", list);
     }
 }
