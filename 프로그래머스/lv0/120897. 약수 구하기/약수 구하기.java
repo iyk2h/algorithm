@@ -1,22 +1,16 @@
 import java.util.Arrays;
+import java.util.stream.*;
 
 class Solution {
     public int[] solution(int n) {
-        int[] divisors = new int[1];
-        int count = 0;
+        return Arrays.stream(getDivisors(n))
+                .sorted()
+                .toArray();
+    }
 
-        for (int i = 1; i <= n; i++) {
-            if (n % i == 0) {
-                if (count == divisors.length) {
-                    divisors = Arrays.copyOf(divisors, count * 2);
-                }
-                divisors[count++] = i;
-            }
-        }
-
-        divisors = Arrays.copyOf(divisors, count);
-        Arrays.sort(divisors);
-
-        return divisors;
+    private int[] getDivisors(int n) {
+        return IntStream.rangeClosed(1, n)
+                .filter(i -> n % i == 0)
+                .toArray();
     }
 }
