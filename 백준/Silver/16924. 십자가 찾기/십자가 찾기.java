@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -18,17 +19,16 @@ public class Main {
                 grid[i][j] = line.charAt(j);
             }
         }
-        ArrayList<Integer> x = new ArrayList<Integer>();
-        ArrayList<Integer> y = new ArrayList<Integer>();
-        ArrayList<Integer> s = new ArrayList<Integer>();
+
+        ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
 
         for(int i=0; i<N; i++) {
             for(int j=0; j<M; j++) {
-                int size = 0; // 십자가 크기
+                int size = 0; // cross size
                 if(grid[i][j] == '*') {
                     for(int k=1; ; k++) {
                         if(i-k >= 0 && i+k < N && j-k >=0 && j+k < M) {
-                            if(grid[i-k][j] == '*' && grid[i+k][j] == '*' && grid[i][j-k] == '*' && grid[i][j+k] == '*') {
+                            if(grid[i-k][j] == '*' && grid[i+k][j] == '*' && grid[i][j-k] == '*' && grid[i][j+ k] == '*') {
                                 size = k;
                             }
                             else break;
@@ -38,9 +38,8 @@ public class Main {
                 }
 
                 if(size > 0) {
-                    x.add(i+1);
-                    y.add(j+1);
-                    s.add(size);
+                    ArrayList<Integer> cross = new ArrayList<>(Arrays.asList(i+1, j+1, size));
+                    arr.add(cross);
                     visited[i][j] = true;
                     for(int k=1; k<=size; k++) {
                         visited[i+k][j] = true;
@@ -52,25 +51,28 @@ public class Main {
             }
         }
 
-        // 격자판 만들 수 없을 때
+        // when grid cannot be created
         for(int i=0; i<N; i++) {
             for(int j=0; j<M; j++) {
                 if(grid[i][j] == '*' && visited[i][j] == false) {
                     System.out.println(-1);
-                    System.exit(0);
+                    System. exit(0);
                 }
             }
         }
 
-        // 격자판 만들 수 있을 때
+        // when grid can be created
         StringBuilder sb = new StringBuilder();
 
         int count = 0;
 
-        for(int i=0; i<x.size(); i++) {
-            for(int j=s.get(i); j>=1; j--) {
+        for(ArrayList<Integer> cross : arr) {
+            int x = cross.get(0);
+            int y = cross.get(1);
+            int size = cross.get(2);
+            for(int j=size; j>=1; j--) {
                 count++;
-                sb.append(x.get(i)+" "+y.get(i)+" "+j).append("\n");
+                sb.append(x+" "+y+" "+j).append("\n");
             }
         }
         sc.close();
@@ -78,5 +80,4 @@ public class Main {
         System.out.println(count);
         System.out.println(sb);
     }
-
 }
