@@ -7,16 +7,12 @@ class Solution {
         int answer = 0;
         int gap = Integer.MAX_VALUE;
 
-        array = Arrays.stream(array)
-                .boxed()
-                .sorted(Comparator.reverseOrder())
-                .mapToInt(Integer::intValue)
-                .toArray();
-
+        Arrays.sort(array);
+        
         for (int i : array) {
             int tmp = Math.abs(i - n);
 
-            if (gap >= tmp) {
+            if (gap > tmp) {
                 gap = tmp;
                 answer = i;
             }
