@@ -1,7 +1,5 @@
 class Solution {
     boolean solution(String s) {
-        boolean answer = true;
-
         s = s.toLowerCase();
 
         int a = 0;
@@ -15,10 +13,6 @@ class Solution {
             }
         }
 
-        if (a != 0) {
-            return false;
-        }
-
-        return answer;
+        return a == 0;
     }
 }
