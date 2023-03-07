@@ -1,14 +1,10 @@
 class Solution {
+
     public long solution(int a, int b) {
-        long answer = 0;
-        
-        int aa = Math.min(a, b);
-        int bb = Math.max(a, b);
-        
-        for(int i = aa; i <= bb; i++){
-            answer += i;
-        }
-        
-        return answer;
+        return sumAtoB(Math.min(a, b), Math.max(b, a));
+    }
+
+    private long sumAtoB(long a, long b) {
+        return (b - a + 1) * (a + b) / 2;
     }
 }
