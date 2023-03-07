@@ -31,19 +31,19 @@ class Solution {
         for (String str : numList) {
             nSum += Integer.parseInt(str);
         }
+        
+        String x = String.valueOf(xSum);
 
+        if (xSum == 1) {
+            x = "";
+        }
+        
         if (nSum == 0) {
-            if (xSum == 1) {
-                return "x";
-            }
-            return xSum + "x";
+            return x + "x";
         } else if (xSum == 0) {
             return String.valueOf(nSum);
         } else {
-            if (xSum == 1) {
-                return "x + " + nSum;
-            }
-            return xSum + "x + " + nSum;
+            return x + "x + " + nSum;
         }
     }
 }
