@@ -9,8 +9,8 @@ class Solution {
         for(int j = 0; j < lost.length; j++){
             for(int i = 0; i < reserve.length; i++){
                 if(lost[j] == reserve[i]){
-                    reserve[i] = -1;
-                    lost[j] = -1;
+                    reserve[i] = Integer.MIN_VALUE;
+                    lost[j] = Integer.MIN_VALUE;
                     count++;
                     break;
                 }
@@ -23,8 +23,8 @@ class Solution {
         for(int j = 0; j < lost.length; j++){
             for(int i = 0; i < reserve.length; i++){
                 if(lost[j] - 1 == reserve[i] || lost[j] + 1 == reserve[i]){
-                    reserve[i] = -1;
-                    // lost[j] = Integer.MAX_VALUE;
+                    reserve[i] = Integer.MIN_VALUE;
+                    lost[j] = Integer.MIN_VALUE;
                     count++;
                     break;
                 }
