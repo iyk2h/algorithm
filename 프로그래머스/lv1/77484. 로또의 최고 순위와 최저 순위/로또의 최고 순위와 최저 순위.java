@@ -16,32 +16,17 @@ class Solution {
         
         int a = 6;
         int b = 6;
-                       
-        if(count == 6){
-            b = 1;
-        }else if(count == 5){
-            b = 2;
-        }else if(count == 4){
-            b = 3;
-        }else if(count == 3){
-            b = 4;
-        }else if(count == 2){
-            b = 5;
+                      
+        if(count > 1){
+            b = 7 - count;
         }
         
         zeroCount += count;
         
-                if(zeroCount == 6){
-            a = 1;
-        }else if(zeroCount == 5){
-            a = 2;
-        }else if(zeroCount == 4){
-            a = 3;
-        }else if(zeroCount == 3){
-            a = 4;
-        }else if(zeroCount == 2){
-            a = 5;
+        if(zeroCount > 1){
+            a = 7 - zeroCount;
         }
+        
                 
         int[] answer = {a, b};
         
