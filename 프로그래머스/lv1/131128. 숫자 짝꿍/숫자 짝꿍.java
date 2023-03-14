@@ -16,15 +16,19 @@ class Solution {
         for (int i = 9; i >= 0; i--) {
             while (xArr[i] > 0 && yArr[i] > 0) {
                 sb.append(i);
-                
+
                 xArr[i]--;
                 yArr[i]--;
-            } 
+            }
         }
-        
-        if (sb.toString().equals("")) return "-1";
-        if ((sb.substring(0,1)).equals("0")) return "0";
-        
+
+        if (sb.toString().equals("")) {
+            return "-1";
+        }
+        if ((sb.substring(0, 1)).equals("0")) {
+            return "0";
+        }
+
         return sb.toString();
     }
 }
