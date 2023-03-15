@@ -1,27 +1,18 @@
 class Solution {
 
     public int solution(int number, int limit, int power) {
-        int answer = 0;
-
-        int[] arr = new int[number];
-
+        int[] count = new int[number + 1];    
         for (int i = 1; i <= number; i++) {
-            int count = 0;
-            for (int j = 1; j * j <= i; j++) {
-                if(j * j == i){
-                    count++;
-                }else if (i % j == 0) {
-                    count += 2;
-                }
+            for (int j = 1; j <= number / i; j++) {
+                count[i * j]++;
             }
-            arr[i - 1] = count;
         }
-
-        for (int i = 0; i < number; i++) {
-            if (arr[i] > limit) {
+        int answer = 0;
+        for (int i = 1; i <= number; i++) {
+            if (count[i] > limit) {
                 answer += power;
             } else {
-                answer += arr[i];
+                answer += count[i];
             }
         }
         return answer;
