@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     public String solution(String s) {
-        Integer[] arr = Arrays.stream(s.split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
+        int[] arr = Arrays.stream(s.split(" ")).mapToInt(Integer::parseInt).toArray();
         
         Arrays.sort(arr);
 
