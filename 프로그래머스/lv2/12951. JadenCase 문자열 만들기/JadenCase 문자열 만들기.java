@@ -2,17 +2,20 @@ class Solution {
     public String solution(String s) {
         String answer = "";
 
-        char[] arr = s.toCharArray();
+        String[] arr = s.toLowerCase().split("");
 
-        answer += String.valueOf(arr[0]).toUpperCase();
+        boolean flag = true;
 
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i - 1] == ' ') {
-                answer += String.valueOf(arr[i]).toUpperCase();
-                continue;
-            } else {
-                answer += String.valueOf(arr[i]).toLowerCase();
-            } 
+        for (String str : arr) {
+            if (flag) {
+                str = str.toUpperCase();
+            }
+            answer += str;
+            if(str.equals(" ")){
+                flag = true;
+            }else{
+                flag = false;
+            }
         }
 
         return answer;
