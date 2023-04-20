@@ -1,60 +1,64 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    static boolean[] visited;
-    static boolean[] finished;
-    static int count;
     static int[] arr;
+    static int[] state;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
 
-        int T = Integer.parseInt(br.readLine());
+        int t = Integer.parseInt(br.readLine());
 
-        for (int i = 0; i < T; i++) {
+        while (t-->0) {
             int n = Integer.parseInt(br.readLine());
+
             StringTokenizer st = new StringTokenizer(br.readLine());
-
-            arr = new int[n + 1];
-            visited = new boolean[n + 1];
-            finished = new boolean[n + 1];
-            count = 0;
-
-            for (int j = 1; j <= n; j++) {
-                arr[j] = Integer.parseInt(st.nextToken());
+            arr = new int[n+1];
+            state = new int[n+1];
+            for (int i = 1; i <= n; i++) {
+                arr[i] = Integer.parseInt(st.nextToken());
+                state[i] = 0;
             }
-
-            for (int j = 1; j <= n; j++) {
-                dfs(j);
+            int ans = 0;
+            for (int i = 1; i <= n; i++) {
+                if (state[i] == 0) {
+                    run(i);
+                }
             }
-
-            System.out.println(n - count);
+            int cnt = 0;
+            for (int i = 1; i <= n; i++) {
+                if (state[i] != -1) {
+                    cnt++;
+                }
+            }
+            System.out.println(cnt);
         }
     }
 
-    static void dfs(int now) {
-        if (visited[now]) {
-            return;
-        }
-
-        visited[now] = true;
-        int tmp = arr[now];
-
-        if (!visited[tmp]) {
-            dfs(tmp);
-        } else {
-            if (!finished[tmp]) {
-                count++;
-                for (int k = tmp; k != now; k = arr[k]) {
-                    count++;
+    static void run(int i) {
+        int cur = i;
+        while (true) {
+            state[cur] = i;
+            cur = arr[cur];
+            // 이번 방문에서 지나간 학생에 도달했을 경우
+            if (state[cur] == i) {
+                while (state[cur] != -1) {
+                    state[cur] = -1;
+                    cur = arr[cur];
                 }
+                return;
+            }
+            // 이전 방문에서 지나간 학생에 도달
+            else if (state[cur] != 0) {
+                return;
             }
         }
-
-        finished[now] = true;
     }
 }
