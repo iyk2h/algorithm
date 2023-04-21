@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -71,31 +72,32 @@ public class Main {
         q = new LinkedList<>();
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (board[i][j] > 0 && !visited[i][j]) {
-                    int nowDeep = board[i][j];
-                    q.offer(new Pair(i, j));
-                    visited[i][j] = true;
-                    while (!q.isEmpty()) {
-                        Pair cur = q.poll();
-                        for (int k = 0; k < 4; k++) {
-                            int nx = cur.x + dx[k];
-                            int ny = cur.y + dy[k];
-                            if (outRange(nx, ny)) {
-                                continue;
-                            }
-                            if (!visited[nx][ny] && board[nx][ny] != nowDeep) {
-                                visited[nx][ny] = true;
-                                if (board[nx][ny] == 0) {
-                                    q.offer(new Pair(nx, ny));
-                                    deeps[nx][ny] = deeps[cur.x][cur.y] + 1;
-                                } else {
-                                    answer = Math.min(answer, deeps[cur.x][cur.y]);
-                                }
+                if (board[i][j] < 1 || visited[i][j]) {
+                    continue;
+                }
+                int nowDeep = board[i][j];
+                q.offer(new Pair(i, j));
+                visited[i][j] = true;
+                while (!q.isEmpty()) {
+                    Pair cur = q.poll();
+                    for (int k = 0; k < 4; k++) {
+                        int nx = cur.x + dx[k];
+                        int ny = cur.y + dy[k];
+                        if (outRange(nx, ny)) {
+                            continue;
+                        }
+                        if (!visited[nx][ny] && board[nx][ny] != nowDeep) {
+                            visited[nx][ny] = true;
+                            if (board[nx][ny] == 0) {
+                                q.offer(new Pair(nx, ny));
+                                deeps[nx][ny] = deeps[cur.x][cur.y] + 1;
+                            } else {
+                                answer = Math.min(answer, deeps[cur.x][cur.y]);
                             }
                         }
                     }
-                    visited = new boolean[N][N];
                 }
+                visited = new boolean[N][N];
             }
         }
         System.out.println(answer);
@@ -107,7 +109,6 @@ public class Main {
 }
 
 class Pair {
-
     int x;
     int y;
 
