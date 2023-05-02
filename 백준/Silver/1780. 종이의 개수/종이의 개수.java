@@ -1,85 +1,75 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
- 
+
 public class Main {
- 
-	public static int[][] board;
-	public static int GRAY = 0;		// -1
-	public static int WHITE = 0;	// 0
-	public static int BLACK = 0;	// 1
- 
-	public static void main(String[] args) throws IOException {
- 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
- 
-		int N = Integer.parseInt(br.readLine());
-		board = new int[N][N];
-		StringTokenizer st;
- 
-		for (int i = 0; i < N; i++) {
-			st = new StringTokenizer(br.readLine(), " ");
-			for (int j = 0; j < N; j++) {
-				board[i][j] = Integer.parseInt(st.nextToken());
-			}
-		}
- 
-		partition(0, 0, N);
- 
-		System.out.println(GRAY);	// -1
-		System.out.println(WHITE);	// 0
-		System.out.println(BLACK);	// 1
- 
-	}
- 
-	
-	public static void partition(int row, int col, int size) {
- 
-		// 만약 같은 색상으로 이루어져있다면 해당 색상 카운트를 증가시킨다.
-		if (colorCheck(row, col, size)) {
-			if(board[row][col] == -1) { 
-				GRAY++;
-			}
-			else if(board[row][col] == 0) {
-				WHITE++;
-			}
-			else {
-				BLACK++;
-			}
- 
-			return;
-		}
- 
-		int newSize = size / 3;
-		
-		partition(row, col, newSize);								// 왼쪽 위
-		partition(row, col + newSize, newSize);						// 중앙 위
-		partition(row, col + 2 * newSize, newSize);					// 오른쪽 위
-		
-		partition(row + newSize, col, newSize);						// 왼쪽 중간
-		partition(row + newSize, col + newSize, newSize);			// 중앙 중간
-		partition(row + newSize, col + 2 * newSize, newSize);		// 오른쪽 중간
-		
-		partition(row + 2 * newSize, col, newSize);					// 왼쪽 아래
-		partition(row + 2 * newSize, col + newSize, newSize);		// 중앙 아래
-		partition(row + 2 * newSize, col + 2 * newSize, newSize);	// 오른쪽 아래
- 
-	}
- 
-	// 해당 영역이 같은 색인지 검사하는 메소드
-	public static boolean colorCheck(int row, int col, int size) {
-		int color = board[row][col];
- 
-		// 각 블럭의 시작점(row, col)부터 블럭의 끝(row + size, col + size)까지 검사
-		for (int i = row; i < row + size; i++) {
-			for (int j = col; j < col + size; j++) {
-				if (color != board[i][j]) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
- 
+
+    static int m = 0;
+    static int z = 0;
+    static int p = 0;
+
+    static int[][] board;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
+        int N = Integer.parseInt(st.nextToken());
+
+        board = new int[N][N];
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+            for (int j = 0; j < N; j++) {
+                board[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        func(0, 0, N);
+
+        System.out.println(m);
+        System.out.println(z);
+        System.out.println(p);
+    }
+
+    private static void func(int r, int l, int n) {
+        if (checkColor(r, l, n)) {
+            if (board[r][l] == -1) {
+                m++;
+            } else if (board[r][l] == 0) {
+                z++;
+            } else if (board[r][l] == 1) {
+                p++;
+            }
+
+            return;
+        }
+        int size = n / 3;
+
+        func(r, l, size);
+        func(r, l + size, size);
+        func(r, l + 2 * size, size);
+
+        func(r + size, l, size);
+        func(r + size, l + size, size);
+        func(r + size, l + 2 * size, size);
+
+        func(r + 2 * size, l, size);
+        func(r + 2 * size, l + size, size);
+        func(r + 2 * size, l + 2 * size, size);
+    }
+
+    private static boolean checkColor(int r, int l, int n) {
+        int start = board[r][l];
+        for (int i = r; i < r + n; i++) {
+            for (int j = l; j < l + n; j++) {
+                if (start != board[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
