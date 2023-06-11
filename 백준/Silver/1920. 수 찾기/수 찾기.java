@@ -6,50 +6,52 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
+        StringTokenizer st;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(br.readLine());
 
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        int[] board = new int[N];
+
+        st = new StringTokenizer(br.readLine());
+
+        for (int i = 0; i < N; i++) {
+            board[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(arr);
+        Arrays.sort(board);
 
-        n = Integer.parseInt(br.readLine());
-        st = new StringTokenizer(br.readLine(), " ");
+        int M = Integer.parseInt(br.readLine());
 
+        st = new StringTokenizer(br.readLine());
 
-        for (int i = 0; i < n; i++) {
-            int key = Integer.parseInt(st.nextToken());
-            if (binarySearch(arr, key) >= 0) {
-                System.out.println(1);
-            } else {
-                System.out.println(0);
-            }
+        StringBuffer sb = new StringBuffer();
+
+        while (M-- > 0) {
+            sb.append(binarySearch(board, Integer.parseInt(st.nextToken()))).append("\n");
         }
 
+        System.out.println(sb);
     }
 
-    public static int binarySearch(int arr[], int key) {
-        int si = 0;
-        int li = arr.length - 1;
+    private static int binarySearch(int[] board, int target) {
+        int st = 0;
+        int en = board.length - 1;
 
-        while (si <= li) {
-            int mid = (si + li) / 2;
+        while (st <= en) {
+            int mid = (st + en) / 2;
+            if (board[mid] < target) {
+                st = mid + 1;
+            } else if (board[mid] > target) {
+                en = mid - 1;
 
-            if (key < arr[mid]) {
-                li = mid - 1;
-            } else if (key > arr[mid]) {
-                si = mid + 1;
             } else {
-                return mid;
+                return 1;
             }
         }
-        return -1;
+        return 0;
     }
 }
