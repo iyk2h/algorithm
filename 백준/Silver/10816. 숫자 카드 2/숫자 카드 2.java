@@ -6,63 +6,67 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
+        StringTokenizer st;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(br.readLine());
 
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        int[] board = new int[N];
+
+        st = new StringTokenizer(br.readLine());
+
+        for (int i = 0; i < N; i++) {
+            board[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(arr);
+        Arrays.sort(board);
 
-        n = Integer.parseInt(br.readLine());
-        st = new StringTokenizer(br.readLine(), " ");
-        StringBuilder sb = new StringBuilder();
+        int M = Integer.parseInt(br.readLine());
 
-        for (int i = 0; i < n; i++) {
-            int key = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
 
-            sb.append(upperBound(arr, key) - lowerBound(arr, key)).append(" ");
+        StringBuffer sb = new StringBuffer();
+
+        while (M-- > 0) {
+            int target = Integer.parseInt(st.nextToken());
+            sb.append(upper_index(board, target)
+                            - lower_index(board, target))
+                    .append(" ");
         }
 
         System.out.println(sb);
-
     }
 
-    public static int lowerBound(int[] arr, int key) {
-        int si = 0;
-        int li = arr.length;
+    private static int lower_index(int[] board, int target) {
+        int st = 0;
+        int en = board.length;
 
-        while (si < li) {
-            int mid = (li + si) / 2;
-
-            if (key <= arr[mid]) {
-                li = mid;
+        while (st < en) {
+            int mid = (st + en) / 2;
+            if (board[mid] >= target) {
+                en = mid;
             } else {
-                si = mid + 1;
+                st = mid + 1;
             }
         }
-        return si;
+        return st;
     }
 
-    public static int upperBound(int[] arr, int key) {
-        int si = 0;
-        int li = arr.length;
+    private static int upper_index(int[] board, int target) {
+        int st = 0;
+        int en = board.length;
 
-        while (si < li) {
-            int mid = (li + si) / 2;
-
-            if (key < arr[mid]) {
-                li = mid;
+        while (st < en) {
+            int mid = (st + en) / 2;
+            if (board[mid] > target) {
+                en = mid;
             } else {
-                si = mid + 1;
+                st = mid + 1;
             }
         }
-        return si;
+        return st;
     }
 }
