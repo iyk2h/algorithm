@@ -11,30 +11,30 @@ public class Main {
 
         int n = Integer.parseInt(st.nextToken());
         int s = Integer.parseInt(st.nextToken());
-        int a[] = new int[n + 1];
+
+        int board[] = new int[n + 1];
+
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            a[i] = Integer.parseInt(st.nextToken());
+            board[i] = Integer.parseInt(st.nextToken());
         }
 
-        int sum = 0;
-        int left = 0;
-        int right = 0;
-        int ans = Integer.MAX_VALUE;
-        int leng = 0;
-        while (right <= n) {
-            if (sum >= s) {
-                sum -= a[left++];
-                leng = right - left + 1;
-                if (ans > leng) {
-                    ans = leng;
-                }
-            } else if (sum < s) {
-                sum += a[right++];
+        int total = 0;
+        int start = 0;
+        int end = 0;
+        int min = Integer.MAX_VALUE;
+        while (start <= n && end <= n) {
+            if (total >= s && min > end - start) {
+                min = end - start;
+            }
+            if (total < s) {
+                total += board[end++];
+            } else {
+                total -= board[start++];
             }
         }
 
-        System.out.println((ans) == Integer.MAX_VALUE ? 0 : ans);
+        System.out.println((min) == Integer.MAX_VALUE ? 0 : min);
 
     }
 }
