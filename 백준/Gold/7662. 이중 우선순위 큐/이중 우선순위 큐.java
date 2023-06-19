@@ -9,33 +9,41 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuffer sb = new StringBuffer();
-
+        
         int t = Integer.parseInt(br.readLine());
-        while (t-- > 0) {
 
+        while (t-- > 0) {
             int n = Integer.parseInt(br.readLine());
 
-            TreeMap<Integer, Integer> que = new TreeMap<>();
-
+            TreeMap<Integer, Integer> map = new TreeMap<>();
             while (n-- > 0) {
                 StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
                 String in = st.nextToken();
                 int val = Integer.parseInt(st.nextToken());
 
                 if (in.equals("I")) {
-                    que.put(val, que.getOrDefault(val, 0) + 1);
+                    map.put(val, map.getOrDefault(val, 0) + 1);
                 } else {
-                    if (que.isEmpty()) {
+                    if (map.isEmpty()) {
                         continue;
                     }
-                    int num = val == 1 ? que.lastKey() : que.firstKey();
-                    if (que.put(num, que.get(num) - 1) == 1) {
-                        que.remove(num);
+                    int key = -1;
+                    if (val == 1) {
+                        key = map.lastKey();
+                    } else {
+                        key = map.firstKey();
+                    }
+                    if (map.put(key, map.get(key) - 1) == 1) {
+                        map.remove(key);
                     }
                 }
-
             }
-            sb.append(que.isEmpty() ? "EMPTY" : que.lastKey() + " " + que.firstKey()).append("\n");
+            if (map.isEmpty()) {
+                sb.append("EMPTY").append("\n");
+            } else {
+                sb.append(map.lastKey()).append(" ").append(map.firstKey()).append("\n");
+            }
         }
 
         System.out.println(sb);
