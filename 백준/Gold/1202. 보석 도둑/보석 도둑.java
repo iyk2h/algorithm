@@ -16,38 +16,41 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
 
-        int t = n;
+        long total = 0;
 
         List<tar> list = new ArrayList<>();
 
-        while (t-- > 0) {
+        for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine(), " ");
             int m = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
             list.add(new tar(m, v));
         }
 
-        Collections.sort(list);
+        Collections.sort(list, (o1, o2) -> {
+            if (o1.m == o2.m) {
+                return o2.v - o1.v;
+            }
+            return o1.m - o2.m;
+        });
 
-        List<Integer> bag = new ArrayList<>();
-
+        List<Integer> bags = new ArrayList<>();
         while (k-- > 0) {
-            bag.add(Integer.valueOf(br.readLine()));
+            bags.add(Integer.valueOf(br.readLine()));
         }
 
-        Collections.sort(bag);
+        Collections.sort(bags);
 
-        long total = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
         int listIdx = 0;
-        PriorityQueue<tar> pq = new PriorityQueue<>((o1, o2) -> o2.v - o1.v);
-
-        for (Integer i : bag) {
-            while (listIdx < n && list.get(listIdx).m <= i) {
-                tar cur = list.get(listIdx++);
-                pq.add(new tar(cur.m, cur.v));
+        for (int bag : bags) {
+            while (listIdx < n && list.get(listIdx).m <= bag) {
+                pq.offer(list.get(listIdx).v);
+                listIdx++;
             }
             if (!pq.isEmpty()) {
-                total += pq.poll().v;
+                total += pq.poll();
             }
         }
 
@@ -55,7 +58,7 @@ public class Main {
     }
 }
 
-class tar implements Comparable<tar> {
+class tar {
 
     int m;
     int v;
@@ -63,13 +66,5 @@ class tar implements Comparable<tar> {
     public tar(int m, int v) {
         this.m = m;
         this.v = v;
-    }
-
-    @Override
-    public int compareTo(tar o) {
-        if (o.m == this.m) {
-            return o.v - this.v;
-        }
-        return this.m - o.m;
     }
 }
