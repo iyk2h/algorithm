@@ -12,47 +12,46 @@ public class Main {
         StringBuffer sb = new StringBuffer();
         StringTokenizer st;
 
+        TreeSet<Node> set = new TreeSet<>();
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+
         int n = Integer.parseInt(br.readLine());
-
-        TreeSet<Node> board = new TreeSet<>();
-        HashMap<Integer, Integer> map = new HashMap<>();
-
         while (n-- > 0) {
             st = new StringTokenizer(br.readLine(), " ");
             int num = Integer.parseInt(st.nextToken());
             int level = Integer.parseInt(st.nextToken());
-            board.add(new Node(num, level));
-            map.put(num, level);
+
+            set.add(new Node(num, level));
+            hashMap.put(num, level);
         }
 
         int m = Integer.parseInt(br.readLine());
         while (m-- > 0) {
             st = new StringTokenizer(br.readLine(), " ");
+            String input = st.nextToken();
 
-            switch (st.nextToken()) {
+            switch (input) {
+                case "recommend":
+                    int x = Integer.parseInt(st.nextToken());
+                    if (x == 1) {
+                        sb.append(set.last().n).append("\n");
+                    } else {
+                        sb.append(set.first().n).append("\n");
+                    }
+                    break;
                 case "add":
                     int num = Integer.parseInt(st.nextToken());
                     int level = Integer.parseInt(st.nextToken());
-                    board.add(new Node(num, level));
-                    map.put(num, level);
-                    break;
-                case "recommend":
-                    int q = Integer.parseInt(st.nextToken());
-                    if (q == 1) {
-                        sb.append(board.last().n).append("\n");
-                    } else {
-                        sb.append(board.first().n).append("\n");
-                    }
+                    set.add(new Node(num, level));
+                    hashMap.put(num, level);
                     break;
                 case "solved":
-                    int key = Integer.parseInt(st.nextToken());
-                    int ml = map.get(key);
-                    board.remove(new Node(key, ml));
-                    map.remove(key);
+                    int p = Integer.parseInt(st.nextToken());
+                    int l = hashMap.get(p);
+                    set.remove(new Node(p, l));
+                    hashMap.remove(p);
                     break;
-
             }
-
         }
 
         System.out.println(sb);
