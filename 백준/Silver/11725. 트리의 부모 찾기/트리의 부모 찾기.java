@@ -1,47 +1,59 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuffer sb = new StringBuffer();
+        StringTokenizer st;
+
+        int N = Integer.parseInt(br.readLine());
 
         ArrayList<ArrayList<Integer>> tree = new ArrayList<>();
-        
-        for (int i = 0; i < n; i++) {
+
+        for (int i = 0; i < N + 1; i++) {
             tree.add(new ArrayList<>());
         }
 
-        for (int i = 0; i < n - 1; i++) {
-            int n1 = sc.nextInt() - 1;
-            int n2 = sc.nextInt() - 1;
-            tree.get(n1).add(n2);
-            tree.get(n2).add(n1);
+        for (int i = 1; i < N; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            tree.get(a).add(b);
+            tree.get(b).add(a);
         }
 
-        boolean[] visited = new boolean[n];
-        int[] parentNode = new int[n];
-
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(0);
+        boolean[] visited = new boolean[N + 1];
+        int[] parent = new int[N + 1];
         visited[0] = true;
-        while (!queue.isEmpty()) {
-            int v = queue.remove();
-            for (int node : tree.get(v)) {
+
+        // BFS
+        Queue<Integer> q = new LinkedList<>();
+        q.add(1);
+        visited[1] = true;
+
+        while (!q.isEmpty()) {
+            int p = q.poll();
+            for (int node : tree.get(p)) {
                 if (!visited[node]) {
                     visited[node] = true;
-                    queue.add(node);
-                    parentNode[node] = v;
+                    q.add(node);
+                    parent[node] = p;
                 }
             }
         }
 
-        for (int i = 1; i < n; i++) {
-            System.out.println(parentNode[i] + 1);
+        for (int i = 2; i <= N; i++) {
+            sb.append(parent[i]).append("\n");
         }
-    }
 
+        System.out.println(sb);
+    }
 }
