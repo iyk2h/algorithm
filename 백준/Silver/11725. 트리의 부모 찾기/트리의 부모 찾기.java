@@ -2,11 +2,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+
+    static ArrayList<ArrayList<Integer>> tree;
+    static boolean[] visited;
+    static int[] parent;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,7 +17,7 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
 
-        ArrayList<ArrayList<Integer>> tree = new ArrayList<>();
+        tree = new ArrayList<>();
 
         for (int i = 0; i < N + 1; i++) {
             tree.add(new ArrayList<>());
@@ -30,30 +32,26 @@ public class Main {
             tree.get(b).add(a);
         }
 
-        boolean[] visited = new boolean[N + 1];
-        int[] parent = new int[N + 1];
-        visited[0] = true;
+        visited = new boolean[N + 1];
+        parent = new int[N + 1];
 
-        // BFS
-        Queue<Integer> q = new LinkedList<>();
-        q.add(1);
-        visited[1] = true;
-
-        while (!q.isEmpty()) {
-            int p = q.poll();
-            for (int node : tree.get(p)) {
-                if (!visited[node]) {
-                    visited[node] = true;
-                    q.add(node);
-                    parent[node] = p;
-                }
-            }
-        }
+        // DFS
+        dfs(1);
 
         for (int i = 2; i <= N; i++) {
             sb.append(parent[i]).append("\n");
         }
 
         System.out.println(sb);
+    }
+
+    public static void dfs(int idx) {
+        visited[idx] = true;
+        for (int i : tree.get(idx)) {
+            if (!visited[i]) {
+                parent[i] = idx;
+                dfs(i);
+            }
+        }
     }
 }
