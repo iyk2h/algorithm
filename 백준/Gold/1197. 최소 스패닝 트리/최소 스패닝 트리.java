@@ -1,11 +1,13 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
+
+    static List<Edge>[] edges;
 
     public static void main(String args[]) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,7 +18,10 @@ public class Main {
         int V = Integer.parseInt(st.nextToken());
         int E = Integer.parseInt(st.nextToken());
 
-        List<Edge> edges = new ArrayList<>();
+        edges = new ArrayList[V + 1];
+        for (int i = 0; i < edges.length; i++) {
+            edges[i] = new ArrayList<>();
+        }
 
         for (int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
@@ -24,60 +29,54 @@ public class Main {
             int end = Integer.parseInt(st.nextToken());
             int cost = Integer.parseInt(st.nextToken());
 
-            edges.add(new Edge(start, end, cost));
+            edges[start].add(new Edge(end, cost));
+            edges[end].add(new Edge(start, cost));
         }
 
-        edges.sort(Comparator.comparingInt(o -> o.cost));
+        prim(1, V);
 
-        int[] parent = new int[V + 1];
-        for (int i = 0; i < V; i++) {
-            parent[i] = i;
-        }
+    }
 
-        int answer = 0;
+    private static void prim(int start, int n) {
+        boolean[] visit = new boolean[n + 1];
 
-        for (int i = 0; i < E; i++) {
-            Edge cur = edges.get(i);
-            if (!isCameParent(parent, cur.s, cur.e)) {
-                union(parent, cur.s, cur.e);
-                answer += cur.cost;
+        PriorityQueue<Edge> pq = new PriorityQueue<>();
+        pq.offer(new Edge(start, 0));
+
+        int total = 0;
+        while (!pq.isEmpty()) {
+            Edge cur = pq.poll();
+            int v = cur.w;
+            int cost = cur.cost;
+
+            if (visit[v]) {
+                continue;
+            }
+
+            visit[v] = true;
+            total += cost;
+
+            for (Edge nx : edges[v]) {
+                if (!visit[nx.w]) {
+                    pq.offer(nx);
+                }
             }
         }
-
-        System.out.println(answer);
-    }
-
-    private static boolean isCameParent(int[] parent, int s, int e) {
-        s = find(parent, s);
-        e = find(parent, e);
-
-        return s == e;
-    }
-
-    private static int find(int[] parent, int s) {
-        if (parent[s] == s) {
-            return s;
-        } else {
-            return parent[s] = find(parent, parent[s]);
-        }
-    }
-
-    private static void union(int[] parent, int s, int e) {
-        s = find(parent, s);
-        e = find(parent, e);
-        if (s != e) {
-            parent[e] = s;
-        }
+        System.out.println(total);
     }
 }
 
-class Edge {
+class Edge implements Comparable<Edge> {
 
-    int s, e, cost;
+    int w, cost;
 
-    public Edge(int s, int e, int cost) {
-        this.s = s;
-        this.e = e;
+    public Edge(int w, int cost) {
+        this.w = w;
         this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(Edge o) {
+        return this.cost - o.cost;
     }
 }
