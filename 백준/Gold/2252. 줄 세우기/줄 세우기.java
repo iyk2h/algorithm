@@ -1,57 +1,57 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        StringBuffer sb = new StringBuffer();
+    public static void main(String args[]) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        int n = Integer.parseInt(st.nextToken());
-        int t = Integer.parseInt(st.nextToken());
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int[] edgeCnt = new int[n + 1];
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+
+        ArrayList<ArrayList<Integer>> board = new ArrayList<>();
+        int[] cnt = new int[n + 1];
 
         for (int i = 0; i < n + 1; i++) {
-            graph.add(new ArrayList<>());
+            board.add(new ArrayList<>());
         }
 
-        for (int i = 0; i < t; i++) {
-            String[] tmp = br.readLine().split(" ");
-            graph.get(Integer.parseInt(tmp[0])).add(Integer.valueOf(tmp[1]));
-            edgeCnt[Integer.parseInt(tmp[1])]++;
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            board.get(a).add(b);
+            cnt[b]++;
         }
 
         Queue<Integer> q = new LinkedList<>();
 
-        for (int i = 1; i < edgeCnt.length; i++) {
-            if (edgeCnt[i] == 0) {
+        for (int i = 1; i < n + 1; i++) {
+            if (cnt[i] == 0) {
                 q.offer(i);
             }
         }
 
+        StringBuffer sb = new StringBuffer();
         while (!q.isEmpty()) {
-            int sn = q.poll();
+            int cur = q.poll();
 
-            sb.append(String.valueOf(sn)).append(" ");
-            List<Integer> list = graph.get(sn);
+            sb.append(cur).append(" ");
 
-            for (int i = 0; i < list.size(); i++) {
-                int tmp = list.get(i);
-                edgeCnt[tmp]--;
-                if (edgeCnt[tmp] == 0) {
-                    q.offer(tmp);
+            for (int next : board.get(cur)) {
+                cnt[next]--;
+                if (cnt[next] == 0) {
+                    q.offer(next);
                 }
             }
         }
-
         System.out.println(sb);
     }
 }
