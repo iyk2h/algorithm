@@ -1,119 +1,108 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, 1, 0, -1};
+    static int n, m;
+    static int[] dx = {0, 0, 1, -1};
+    static int[] dy = {1, -1, 0, 0};
 
-    static int N, deep;
-    static int[][] board;
-    static int[][] deeps;
-    static boolean[][] visited;
+    static boolean[][] visit;
+    static int[][] map;
+    static int[][] dist;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        int answer = Integer.MAX_VALUE;
+        map = new int[n][n];
+        visit = new boolean[n][n];
 
-        board = new int[N][N];
-        deeps = new int[N][N];
-        visited = new boolean[N][N];
-
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < N; j++) {
-                board[i][j] = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < n; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        // 섬 색릴하기
-        Queue<Pair> q = new LinkedList<>();
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (board[i][j] == 1 && !visited[i][j]) {
-                    q.offer(new Pair(i, j));
-                    visited[i][j] = true;
-                    deep++;
-                    board[i][j] = deep;
-                }
+        int cnt = 0;
 
-                while (!q.isEmpty()) {
-                    Pair cur = q.poll();
-                    board[cur.x][cur.y] = deep;
-                    for (int k = 0; k < 4; k++) {
-                        int nx = cur.x + dx[k];
-                        int ny = cur.y + dy[k];
-                        if (outRange(nx, ny)) {
-                            continue;
-                        }
-                        if (visited[nx][ny] || board[nx][ny] == 0) {
-                            continue;
-                        }
-                        q.offer(new Pair(nx, ny));
-                        visited[nx][ny] = true;
-                    }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visit[i][j] && map[i][j] == 1) {
+                    cnt++;
+                    Queue<int[]> q = new LinkedList<>();
+                    q.add(new int[]{i, j});
+                    visit[i][j] = true;
+                    map[i][j] = cnt;
+                    while (!q.isEmpty()) {
+                        int[] cur = q.poll();
+                        int cx = cur[0];
+                        int cy = cur[1];
 
-                }
-            }
-        }
+                        for (int k = 0; k < 4; k++) {
+                            int nx = cx + dx[k];
+                            int ny = cy + dy[k];
 
-        // 다른 섬 찾기
-        visited = new boolean[N][N];
-        q = new LinkedList<>();
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (board[i][j] < 1 || visited[i][j]) {
-                    continue;
-                }
-                int nowDeep = board[i][j];
-                q.offer(new Pair(i, j));
-                visited[i][j] = true;
-                while (!q.isEmpty()) {
-                    Pair cur = q.poll();
-                    for (int k = 0; k < 4; k++) {
-                        int nx = cur.x + dx[k];
-                        int ny = cur.y + dy[k];
-                        if (outRange(nx, ny)) {
-                            continue;
-                        }
-                        if (!visited[nx][ny] && board[nx][ny] != nowDeep) {
-                            visited[nx][ny] = true;
-                            if (board[nx][ny] == 0) {
-                                q.offer(new Pair(nx, ny));
-                                deeps[nx][ny] = deeps[cur.x][cur.y] + 1;
-                            } else {
-                                answer = Math.min(answer, deeps[cur.x][cur.y]);
+                            if (oob(nx, ny)) {
+                                continue;
+                            }
+                            if (map[nx][ny] == 1 && !visit[nx][ny] ) {
+                                visit[nx][ny] = true;
+                                map[nx][ny] = cnt;
+                                q.add(new int[]{nx, ny});
                             }
                         }
                     }
                 }
-                visited = new boolean[N][N];
+            }
+        }
+
+        visit = new boolean[n][n];
+        dist = new int[n][n];
+        Queue<int[]> q = new LinkedList<>();
+
+        int answer = Integer.MAX_VALUE;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (map[i][j] < 1 || visit[i][j]) {
+                    continue;
+                }
+                int nowDeep = map[i][j];
+                q.add(new int[]{i, j});
+                visit[i][j] = true;
+                while (!q.isEmpty()) {
+                    int[] cur = q.poll();
+                    int cx = cur[0];
+                    int cy = cur[1];
+
+                    for (int k = 0; k < 4; k++){
+                        int nx = cx + dx[k];
+                        int ny = cy + dy[k];
+
+                        if (oob(nx, ny)) {
+                            continue;
+                        }
+                        if (visit[nx][ny] || map[nx][ny] == nowDeep) {
+                            continue;
+                        }
+                        visit[nx][ny] = true;
+                        if (map[nx][ny] == 0) {
+                            q.add(new int[]{nx, ny});
+                            dist[nx][ny] = dist[cx][cy] + 1;
+                        } else {
+                            answer = Math.min(answer, dist[cx][cy]);
+                        }
+                    }
+                }
+                visit = new boolean[n][n];
             }
         }
         System.out.println(answer);
     }
 
-    static boolean outRange(int x, int y) {
-        return x < 0 || x >= N || y < 0 || y >= N;
-    }
-}
-
-class Pair {
-    int x;
-    int y;
-
-    public Pair(int x, int y) {
-        this.x = x;
-        this.y = y;
+    private static boolean oob(int nx, int ny) {
+        return nx < 0 || nx >= n || ny < 0 || ny >= n;
     }
 }
