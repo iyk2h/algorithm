@@ -1,38 +1,36 @@
 class Solution {
     boolean[] visit;
-    int answer = Integer.MAX_VALUE;
+    int answer;
     public int solution(String begin, String target, String[] words) {
-
         visit = new boolean[words.length];
-        dfs(words, begin, target, 0);
-
-        if (answer == Integer.MAX_VALUE) {
+        answer = words.length;
+        dfs(begin, target, words, 0);
+        
+        if (answer == words.length) {
             return 0;
         }
+        
         return answer;
     }
-
-    private void dfs(String[] words, String cur, String target, int cnt) {
-
-        if(cur.equals(target)) {
-            if (cnt < answer) {
-                answer = cnt;
-            }
-
-            return;
+    
+    private void dfs(String begin, String target, String[] words, int depth) {
+        if (begin.equals(target)) {
+            answer = Math.min(answer, depth);
         }
-
+        
         for (int i = 0; i < words.length; i++) {
-            if (visit[i]) continue;
-            int k = 0;
-            for (int j = 0; j < cur.length(); j++) {
-                if (cur.charAt(j) != words[i].charAt(j)) {
-                    k++;
+            
+            if ((visit[i])) continue;
+            
+            int diff = 0;
+            for (int j = 0; j < target.length(); j++) {
+                if (begin.charAt(j) != words[i].charAt(j)) {
+                    diff++;
                 }
             }
-            if (k == 1) {
+            if (diff == 1) {
                 visit[i] = true;
-                dfs(words, words[i], target, cnt + 1);
+                dfs(words[i], target, words, depth + 1);
                 visit[i] = false;
             }
         }
